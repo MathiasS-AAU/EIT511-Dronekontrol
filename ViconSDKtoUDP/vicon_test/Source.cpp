@@ -100,7 +100,7 @@ union doubleArray2char
 // Main loop
 int main() {
     // Setup UDP connection with IPv4 and port
-    InitUDP("172.26.50.216", 5004);
+    InitUDP("172.26.56.32", 5004);
 
     ViconDataStreamSDK::CPP::Client MyClient;// Creating the client for ViconSDK
     //Connecting to Vicon Server
