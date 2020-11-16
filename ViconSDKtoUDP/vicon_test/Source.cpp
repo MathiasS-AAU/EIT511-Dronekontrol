@@ -100,7 +100,7 @@ union doubleArray2char
 // Main loop
 int main() {
     // Setup UDP connection with IPv4 and port
-    InitUDP("192.168.137.146", 5004);
+    InitUDP("172.26.50.216", 5004);
 
     ViconDataStreamSDK::CPP::Client MyClient;// Creating the client for ViconSDK
     //Connecting to Vicon Server
@@ -133,7 +133,7 @@ int main() {
 
         // convert data to correct units and ready for insertion to packet
         Rot.d[0] = rotation[0] * 180.0 / PI; Rot.d[1] = rotation[1] * 180.0 / PI; Rot.d[2] = rotation[2] * 180.0 / PI;
-        Pos.d[0] = translation[0] * 1000.0; Pos.d[1] = translation[1] * 1000.0; Pos.d[2] = translation[2] * 1000.0;
+        Pos.d[0] = translation[0] / 1000.0; Pos.d[1] = translation[1] / 1000.0; Pos.d[2] = translation[2] / 1000.0;
 
         //Create packet
         char Packet[56];
