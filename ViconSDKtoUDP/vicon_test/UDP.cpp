@@ -30,22 +30,6 @@ int InitUDP(const char* IP, unsigned short Port)
 		return -1;
 	}
 
-
-
-	/*struct addrinfo* result = NULL, * ptr = NULL, hints;
-
-	ZeroMemory(&hints, sizeof(hints));
-	hints.ai_family = AF_INET;
-	hints.ai_socktype = SOCK_DGRAM;
-	hints.ai_protocol = IPPROTO_UDP;
-	hints.ai_flags = AI_PASSIVE;
-
-	iResult = getaddrinfo(NULL, "5005", &hints, &result);
-	if (iResult != 0) {
-		printf("getaddrinfo failed: %d\n", iResult);
-		WSACleanup();
-		return 1;
-	}*/
 	//---------------------------------------------
 	// Create a socket for sending data
 	SendSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -55,15 +39,6 @@ int InitUDP(const char* IP, unsigned short Port)
 		return -1;
 	}
 
-	/*iResult = bind(SendSocket, result->ai_addr, (int)result->ai_addrlen);
-	if (iResult == SOCKET_ERROR) {
-		printf("bind failed with error: %d\n", WSAGetLastError());
-		freeaddrinfo(result);
-		closesocket(SendSocket);
-		WSACleanup();
-		return 1;
-	}*/
-
 #pragma warning(disable:4996) 
 	//---------------------------------------------
 	// Set up the RecvAddr structure with the IP address of
@@ -72,38 +47,12 @@ int InitUDP(const char* IP, unsigned short Port)
 	RecvAddr.sin_family = AF_INET;
 	RecvAddr.sin_port = htons(Port);
 	RecvAddr.sin_addr.s_addr = inet_addr(IP);
-
-	/*    wprintf(L"Recieving a datagram from the receiver...\n");
-	iResult = recvfrom(SendSocket,RecvBuf, BufLen, 0, NULL, NULL);
-	if (iResult == SOCKET_ERROR) {
-		wprintf(L"recvfrom failed with error: %d\n", WSAGetLastError());
-		closesocket(SendSocket);
-		WSACleanup();
-		return 1;
-	}
-	char lol[512];
-	strncpy_s(lol, RecvBuf, 100);
-	sprintf_s(SendBuf, "Lmao: %s", lol);
-	printf("%s\n",SendBuf);*/
-	//---------------------------------------------
-	// Send a datagram to the receiver
-	wprintf(L"Sending a datagram to the receiver...\n");
-	{
-		iResult = sendto(SendSocket,
-			SendBuf, BufLen, 0, (SOCKADDR*)&RecvAddr, sizeof(RecvAddr));
-		if (iResult == SOCKET_ERROR) {
-			wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
-			closesocket(SendSocket);
-			WSACleanup();
-			return -1;
-		}
-	}    //---------------------------------------------
-	// When the application is finished sending, close the socket.
-	return 0;
 }
 
 int SendDataUDP(char* SendBuf, unsigned int BufLen)
 {
+	//---------------------------------------------
+	// Send a datagram to the receiver
 	int iResult;
 	wprintf(L"Sending a datagram to the receiver...\n");
 	iResult = sendto(SendSocket,
