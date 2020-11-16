@@ -1,9 +1,7 @@
 ﻿  UDP.cpp
-C:\Users\mathi\OneDrive\Dokumenter\GitHub\EIT511-Dronekontrol\ViconSDKtoUDP\vicon_test\UDP.cpp(22,7): warning C4101: 'SendBuf': unreferenced local variable
-C:\Users\mathi\OneDrive\Dokumenter\GitHub\EIT511-Dronekontrol\ViconSDKtoUDP\vicon_test\UDP.cpp(21,7): warning C4101: 'RecvBuf': unreferenced local variable
   Generating code
-C:\Users\mathi\OneDrive\Dokumenter\GitHub\EIT511-Dronekontrol\ViconSDKtoUDP\vicon_test\UDP.cpp(50): warning C4715: 'InitUDP': not all control paths return a value
-  3 of 93 functions ( 3.2%) were compiled, the rest were copied from previous compilation.
+C:\Users\mathi\OneDrive\Dokumenter\GitHub\EIT511-Dronekontrol\ViconSDKtoUDP\vicon_test\UDP.cpp(47): warning C4715: 'InitUDP': not all control paths return a value
+  2 of 93 functions ( 2.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

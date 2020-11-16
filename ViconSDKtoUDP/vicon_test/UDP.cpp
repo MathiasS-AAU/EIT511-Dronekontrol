@@ -7,6 +7,7 @@
 #include"udp.h"
 // Link with ws2_32.lib
 #pragma comment(lib, "Ws2_32.lib")
+
 WSADATA wsaData;
 
 SOCKET SendSocket = INVALID_SOCKET;
@@ -16,11 +17,6 @@ int InitUDP(const char* IP, unsigned short Port)
 {
 
 	int iResult;
-
-	//unsigned short Port = 5004;
-	char RecvBuf[1024];
-	char SendBuf[1024];
-	int BufLen = 1024;
 
 	//----------------------
 	// Initialize Winsock
@@ -39,7 +35,8 @@ int InitUDP(const char* IP, unsigned short Port)
 		return -1;
 	}
 
-#pragma warning(disable:4996) 
+#pragma warning(disable:4996)  //Allows usage of inet_addr(IP) that is a deprecated function //Likely just a Visual Studio thing
+
 	//---------------------------------------------
 	// Set up the RecvAddr structure with the IP address of
 	// the receiver (in this example case "192.168.1.1")"192.168.137.146"
