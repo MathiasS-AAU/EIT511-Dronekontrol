@@ -16,7 +16,7 @@
 
 #define CSV_OUTPUT( FILE, OUTPUT ) if( FILE.good() ) FILE << OUTPUT
 
-//Læs resultatets enum værdi og giv string
+//Read the result enum value and return a string
 std::string resultEnumParse(unsigned int Result) 
 {
     switch(Result)
