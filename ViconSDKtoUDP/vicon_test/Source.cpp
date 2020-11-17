@@ -68,8 +68,9 @@ std::string resultEnumParse(unsigned int Result)
 }
 
 //Vicon object data to be tracked. Seems it needs to be identical.
-#define OBJECT "LOL"
-#define SEGMENT "LOL"
+//#define OBJECT "LOL"
+//#define SEGMENT "LOL"
+#define SEGMENT OBJECT
 
 //Unions for conversion to bytes
 union uint64_t2char
@@ -91,8 +92,17 @@ union doubleArray2char
 #define PI 3.14159265359
 // Main loop
 int main() {
+    std::string IP;
+    std::cout << "Input IP address of control system:\n";
+    std::cin >> IP;
+
+    std::string OBJECT;
+    std::cout << "Input tracked object name:\n";
+    std::cin >> OBJECT;
+   
+
     // Setup UDP connection with IPv4 and port
-    InitUDP("172.26.56.32", 5004);
+    InitUDP(IP.c_str(), 5004);
 
     ViconDataStreamSDK::CPP::Client MyClient;// Creating the client for ViconSDK
     //Connecting to Vicon Server
@@ -121,7 +131,7 @@ int main() {
         std::cout << "Rotation X:" << rotation[0] << " Y: " << rotation[1] << " Z: " << rotation[2] << "\n";
         std::cout << "Position X:" << translation[0] << " Y: " << translation[1] << " Z: " << translation[2] << "\n";
         //Stop and wait for keyboard press
-        char c = _getch();
+        char c = 0;//_getch();
 
         // convert data to correct units and ready for insertion to packet
         Rot.d[0] = rotation[0] * 180.0 / PI; Rot.d[1] = rotation[1] * 180.0 / PI; Rot.d[2] = rotation[2] * 180.0 / PI;
