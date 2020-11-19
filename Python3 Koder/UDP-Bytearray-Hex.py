@@ -15,12 +15,12 @@ import struct
 #sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
 
 
-UDP_IP_in = "172.26.56.32"
+UDP_IP_in = "172.26.19.9"
 UDP_PORT_in = 5004
 
 sock_in = socket.socket(socket.AF_INET,  # Internet
                   socket.SOCK_DGRAM)  # UDP
-
+sock_in.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1)
 sock_in.bind((UDP_IP_in, UDP_PORT_in))
 
 while True:
