@@ -15,7 +15,7 @@ import struct
 #sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
 
 
-UDP_IP_in = "172.26.56.32"
+UDP_IP_in = "169.254.33.95"
 UDP_PORT_in = 5004
 
 sock_in = socket.socket(socket.AF_INET,  # Internet
