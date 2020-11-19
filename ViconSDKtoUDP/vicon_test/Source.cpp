@@ -129,24 +129,24 @@ int main() {
     //Unions for conversion to bytes
     doubleArray2char Rot;
     doubleArray2char Pos;
-    uint64_t2char i;
-    i.i = 0;
+    uint64_t2char time;
+    time.i = 0;
 
     while (1) // Press Esc to end loop
     {
-        // Get one frame of data
-        if (GetMilli() - i.i > 20) {
+        //How long ago was the last transmission?
+        uint64_t timedif = GetMilli() - time.i;
+        
+        //wait at least x ms before sending.
+        if (timedif > 20) {
+            std::cout << "timedif: " << timedif << "\n";
+            // Get one frame of data
             MyClient.GetFrame();
             //check if Object and Segment are correct
             std::cout << "Get sample: " << resultEnumParse(MyClient.GetSegmentGlobalRotationEulerXYZ(OBJECT, SEGMENT).Result) << "\n";
             //Read rotation and translation
             double* rotation = MyClient.GetSegmentGlobalRotationEulerXYZ(OBJECT, SEGMENT).Rotation;
             double* translation = MyClient.GetSegmentGlobalTranslation(OBJECT, SEGMENT).Translation;
-            //print the raw position and rotation
-            //std::cout << "Rotation X:" << rotation[0] << " Y: " << rotation[1] << " Z: " << rotation[2] << "\n";
-            //std::cout << "Position X:" << translation[0] << " Y: " << translation[1] << " Z: " << translation[2] << "\n";
-            //Stop and wait for keyboard press
-            //char c = 0;//_getch();
 
             // convert data to correct units and ready for insertion to packet
             Rot.d[0] = rotation[0] * 180.0 / PI; Rot.d[1] = rotation[1] * 180.0 / PI; Rot.d[2] = rotation[2] * 180.0 / PI;
@@ -157,7 +157,7 @@ int main() {
             //Print contents of packet
             std::cout << "Sending packet: " << "\nPos = " << Pos.d[0] << " " << Pos.d[1] << " " << Pos.d[2]
                 << "\nRot = " << Rot.d[0] << " " << Rot.d[1] << " " << Rot.d[2]
-                << "\nms since epoch: " << i.i << "\n";
+                << "\nms since epoch: " << time.i << "\n";
 
             //Inserting data into packet
             for (int j = 0; j < 24; j++)
@@ -168,17 +168,15 @@ int main() {
             {
                 Packet[j + 24] = Rot.c[j];
             }
-            i.i = GetMilli();
+            time.i = GetMilli();
             for (int j = 0; j < 8; j++)
             {
-                Packet[j + 48] = i.c[j];
+                Packet[j + 48] = time.c[j];
             }
 
 
             //Send packet
             SendDataUDP(Packet, 56);
-            //if (c == 27) break;
-            //i.i++;
         }
     }
     //Disconnect from SDK
