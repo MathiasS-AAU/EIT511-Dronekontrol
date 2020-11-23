@@ -9,7 +9,7 @@ from cflib.crazyflie import Crazyflie
 from cflib.crazyflie.syncCrazyflie import SyncCrazyflie
 from cflib.positioning.motion_commander import MotionCommander
 
-def DebugPrint :
+def DebugPrint:
     if k >= 50:
         print("--- Packet:", i, "--------- Latency:", latencyUDP, "---")
         print("Distance to target =", dist_error, "m")
@@ -21,7 +21,18 @@ def DebugPrint :
         k = -1    
     k += 1
 
+# Define sequence
+x1_ref = (1,)
+y1_ref = (1,)
+x2_ref = (1,)
+y2_ref = (-1,)
+x3_ref = (-1,)
+y3_ref = (-1,)
+x4_ref = (-1,)
+y4_ref = (1,)
+
 # Constants
+seq = [(x1_ref), (y1_ref), (x2_ref), (y2_ref), (x3_ref), (y3_ref), (x4_ref), (y4_ref)]
 x_ref = (0.001,)
 y_ref = (0.001,)
 kp_yaw = 3.236
@@ -30,6 +41,7 @@ maxLat = 460 # Max latency
 maxVel = 2 # Max forward velocity
 maxRot = 50 # Max yawrate
 k = 0
+refTime = 1000 # [ms]
 
 # DataStream Setup
 UDP_IP_in = "172.26.56.152" # Linuxterminal: Hostname -I
@@ -44,6 +56,9 @@ logging.basicConfig(level=logging.ERROR)
 cflib.crtp.init_drivers(enable_debug_driver=False)
 
 ############# Start flight ###################
+x_ref = seq[0]
+y_ref = seq[1]
+i = 2
 with SyncCrazyflie(URI, cf=Crazyflie(rw_cache='./cache')) as scf:
     print("Crazyflie taking off")
     with MotionCommander(scf) as mc:
@@ -89,6 +104,19 @@ with SyncCrazyflie(URI, cf=Crazyflie(rw_cache='./cache')) as scf:
             elif 180 < angle_error:
                 angle_error = angle_error - 360
 
+            ############# Sequence reference ###################
+            if dist_error <= 0.25:
+                timeInRef2 = int(time.time()*1000)
+                if (timeInRef2-timeInRef1) >= refTime:
+                    x_ref = seq[i]
+                    i += 1
+                    y_ref = seq[i]
+                    i += 1
+                    print("Referencepoint met! Next pont is", x_ref, ",", y_ref)
+                    if i >= len(seq):
+                        print("Sequence done!")
+                        break
+
             ################# Controller time #################
             if x_meas == 0 and y_meas == 0:
                 cs_y = 0
@@ -109,5 +137,4 @@ with SyncCrazyflie(URI, cf=Crazyflie(rw_cache='./cache')) as scf:
             mc._set_vel_setpoint(cs_y, 0, 0, cs_yaw)
 
             #DebugPrint()
-            
-            print(angle_of_target)
+            #print(angle_of_target)
