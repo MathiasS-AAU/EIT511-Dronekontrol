@@ -20,7 +20,8 @@ int InitUDP(const char* IP, unsigned short Port)
 
 	//----------------------
 	// Initialize Winsock
-	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	iResult = WSAStartup(MAKEWORD(2, 2),//Windows socket specification version 2.2 //The highest version of Windows Sockets specification that the caller can use. The high-order byte specifies the minor version number; the low-order byte specifies the major version number.
+		&wsaData); // pointer to WSADATA structure
 	if (iResult != NO_ERROR) {
 		wprintf(L"WSAStartup failed with error: %d\n", iResult);
 		return -1;
@@ -28,7 +29,9 @@ int InitUDP(const char* IP, unsigned short Port)
 
 	//---------------------------------------------
 	// Create a socket for sending data
-	SendSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	SendSocket = socket(AF_INET, // Address family: IPv4
+		SOCK_DGRAM, //Type specification: datagrams (connectionless, unreliable buffers of a fixed (typically small) maximum length. [uses UDP])
+		IPPROTO_UDP); //Protocol: UDP
 	if (SendSocket == INVALID_SOCKET) {
 		wprintf(L"socket failed with error: %ld\n", WSAGetLastError());
 		WSACleanup();
@@ -41,7 +44,7 @@ int InitUDP(const char* IP, unsigned short Port)
 	// Set up the RecvAddr structure with the IP address of
 	// the receiver (in this example case "192.168.1.1")"192.168.137.146"
 	// and the specified port number.
-	RecvAddr.sin_family = AF_INET;
+	RecvAddr.sin_family = AF_INET; // Address family: IPv4
 	RecvAddr.sin_port = htons(Port);
 	RecvAddr.sin_addr.s_addr = inet_addr(IP);
 }
