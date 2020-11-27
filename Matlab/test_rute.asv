@@ -1,0 +1,82 @@
+ViconFile=uigetfile('*.csv','Select exported file from Vicon (csv)');
+ViconData=csvread(ViconFile,5); % Ignore the first 5 columns (nodata)
+    Frame=ViconData(:,1);   % Frame [#]
+    TX=ViconData(:,6);      % Translation x = Right [mm]
+    TY=ViconData(:,7);      % Translation y = Forward [mm]
+%from mm to m
+TX = TX/1000;
+TY = TY/1000;
+
+%Route
+figure(1);
+plot([-0.75 0.75 0.75 -0.75 -0.75], [0.75 0.75 -0.75 -0.75 0.75],TX,TY)
+
+%Distance
+for i = 1 : length(TX)
+    %Line distances
+    L1Dist = abs(0.75-TY(i));
+    L2Dist = abs(-0.75-TY(i));
+    L3Dist = abs(-0.75-TX(i));
+    L4Dist = abs(0.75-TX(i));
+    
+    
+    %Check for invalid line distances
+    %Ignore horizontal lines if outside of box in x direction
+    if TX(i) < -0.75 || TX(i) > 0.75
+        L1Dist = 1e6;
+        L2Dist = 1e6;
+    end
+    %Ignore vertical lines if outside of box in y direction
+    if TY(i) < -0.75 || TY(i) > 0.75
+        L3Dist = 1e6;
+        L4Dist = 1e6;
+    end
+    %If outside of box in both x and y direction use point distances instead
+    if (TX(i) < -0.75 || TX(i) > 0.75) && (TY(i) < -0.75 || TY(i) > 0.75)
+        %Point distances
+        L1Dist = Sqrt((0.75 - TX(i))^2 + (0.75 - TY(i))^2);
+        L2Dist = Sqrt((-0.75  -TX(i))^2 + (0.75 - TY(i))^2);
+        L3Dist = Sqrt((0.75 - TX(i))^2 + (-0.75 - TY(i))^2);
+        L4Dist = Sqrt((-0.75 - TX(i))^2 + (-0.75 - TY(i))^2);
+    end
+    
+    %Find the lowest value
+    if L1Dist < L2Dist
+        Dist = L1Dist;
+    else
+        Dist = L2Dist;
+    end
+    if Dist > L3Dist
+        Dist = L3Dist;
+    end
+    if Dist > L4Dist
+        Dist = L4Dist;
+    end
+    
+    %Put the lowest value in the array
+    DistVector(i) = Dist;
+end
+figure(2);
+plot(Frame,DistVector)
+
+% Lowpass filtering and derivative:
+fs=100;
+syms f(x);
+    TY = lowpass(TY,1,fs);
+    dTY = gradient(TY(:)) ./ gradient(Frame(:));
+    ddTY= gradient(dTY(:)) ./ gradient(Frame(:));
+figure(3);  
+    plot(Frame,dTY);
+    title('Hastighed');
+    ylabel('y [m/s]');
+    xlim([0.25 0.6]);
+       ylim([-0.5 1]);
+            kdTY=0.4*framerate; %(Tangentpoint [s])*framerate
+            tangdTY=(Frame-Frame(kdTY))*ddTY(kdTY)+dTY(kdTY); %y = slope * (x - xTangent) + yOffset
+            hold on;
+            plot(Frame,tangdTY);
+            scatter(Frame(kdTY),dTY(kdTY));
+            hold off;
+            disp(round(ddTY(kdTY)));
+        grid on;
+        xlabel('Tid [s]');   
