@@ -138,7 +138,7 @@ int main() {
         uint64_t timedif = GetMilli() - time.i;
         
         //wait at least x ms before sending.
-        if (timedif > 20) {
+        if (timedif >= 10) {
             std::cout << "timedif: " << timedif << "\n";
             // Get one frame of data
             MyClient.GetFrame();

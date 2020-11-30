@@ -2,7 +2,7 @@
   UDP.cpp
   Generating code
   Previous IPDB not found, fall back to full compilation.
-C:\Users\mathi\OneDrive\Dokumenter\GitHub\EIT511-Dronekontrol\ViconSDKtoUDP\vicon_test\UDP.cpp(47): warning C4715: 'InitUDP': not all control paths return a value
+C:\Users\mathi\OneDrive\Dokumenter\GitHub\EIT511-Dronekontrol\ViconSDKtoUDP\vicon_test\UDP.cpp(50): warning C4715: 'InitUDP': not all control paths return a value
   All 137 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   vicon_test.vcxproj -> C:\Users\mathi\OneDrive\Dokumenter\GitHub\EIT511-Dronekontrol\ViconSDKtoUDP\x64\Release\vicon_test.exe
