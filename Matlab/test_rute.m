@@ -1,6 +1,13 @@
+% test_rute.m - Version 1 (28/11/2020)
+% EIT5: 20gr511
+% Script reads csv files from Vicon Tracker to verify the results of the
+% second accept test. The route test.
+% The measured file has to be inside a folder on the Matlab path
+% REMEMBER TO ADD ALL RELEVANT (SUB)FOLDERS TO THE PATH! (Else error)
     clear all;
     %close all;
 
+% Open file dialog and read file:
 ViconFile=uigetfile('*.csv','Select exported file from Vicon (csv)');
 ViconData=csvread(ViconFile,5); % Ignore the first 5 columns (nodata)
     Frame=ViconData(:,1);   % Frame [#]
@@ -10,7 +17,7 @@ ViconData=csvread(ViconFile,5); % Ignore the first 5 columns (nodata)
 TX = TX/1000;
 TY = TY/1000;
 
-%Route
+%Plot route
 figure(1);
 plot([-0.75 0.75 0.75 -0.75 -0.75], [0.75 0.75 -0.75 -0.75 0.75],TX,TY)
     ylim([-1 1]);
@@ -39,10 +46,10 @@ for i = 1 : length(TX)
     %If outside of box in both x and y direction use point distances instead
     if (TX(i) < -0.75 || TX(i) > 0.75) && (TY(i) < -0.75 || TY(i) > 0.75)
         %Point distances
-        L1Dist = Sqrt((0.75 - TX(i))^2 + (0.75 - TY(i))^2);
-        L2Dist = Sqrt((-0.75  -TX(i))^2 + (0.75 - TY(i))^2);
-        L3Dist = Sqrt((0.75 - TX(i))^2 + (-0.75 - TY(i))^2);
-        L4Dist = Sqrt((-0.75 - TX(i))^2 + (-0.75 - TY(i))^2);
+        L1Dist = sqrt((0.75 - TX(i))^2 + (0.75 - TY(i))^2);
+        L2Dist = sqrt((-0.75  -TX(i))^2 + (0.75 - TY(i))^2);
+        L3Dist = sqrt((0.75 - TX(i))^2 + (-0.75 - TY(i))^2);
+        L4Dist = sqrt((-0.75 - TX(i))^2 + (-0.75 - TY(i))^2);
     end
     
     %Find the lowest value
@@ -81,7 +88,7 @@ syms f(x);
 figure(3);  
     plot(Frame,dTD);
     title('Hastighed');
-    ylabel('y [m/s]');
+    ylabel('Vd [m/s]');
     ylim([0 2]);
     grid on;
     xlabel('Tid [s]');   
