@@ -21,7 +21,7 @@ fig = figure('Name','Effekt af forsinkelse på fase');
         h.Annotation.LegendInformation.IconDisplayStyle = 'off';
         legend('1 s','100 ms','10 ms','1 ms');
         
-        title('Bodeplot af forsinkelse')
+        title('Bodeplot af f')
         xlabel('Frekvens')
       
         
