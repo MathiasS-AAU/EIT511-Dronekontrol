@@ -138,7 +138,8 @@ int main() {
         uint64_t timedif = GetMilli() - time.i;
         
         //wait at least x ms before sending.
-        if (timedif >= 10) {
+        if (timedif >= 50) {
+            time.i = GetMilli();
             std::cout << "timedif: " << timedif << "\n";
             // Get one frame of data
             MyClient.GetFrame();
@@ -168,7 +169,7 @@ int main() {
             {
                 Packet[j + 24] = Rot.c[j];
             }
-            time.i = GetMilli();
+            
             for (int j = 0; j < 8; j++)
             {
                 Packet[j + 48] = time.c[j];

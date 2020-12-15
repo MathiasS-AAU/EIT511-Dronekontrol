@@ -1,0 +1,16 @@
+s = tf('s')
+G0 = exp(-1*s)
+G1 = exp(-0.1*s)
+G2 = exp(-0.01*s)
+G3 = exp(-0.001*s)
+
+
+figure(1)
+bode(G0,G1,G2,G3)
+figure('Name','Effekt af forsinkelse på fase'); 
+    
+    subplot(1,2,1);
+        [mag,phase0,wout] = bode(G0);
+        plot(wout,squeeze(m))
+    subplot(1,2,2);
+        bode(G1)
