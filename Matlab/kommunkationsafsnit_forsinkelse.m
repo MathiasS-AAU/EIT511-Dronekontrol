@@ -10,15 +10,10 @@ close all;
 figure('Name','Effekt af forsinkelse på fase'); 
     opts = bodeoptions('cstprefs');
     opts.MagVisible = 'off';
-    subplot(1,4,1);
-        bode(G0,opts)
-        title('1 s');
-    subplot(1,4,2);
-        bode(G1,opts)
-        title('100 ms');
-    subplot(1,4,3);
-        bode(G2,opts)
-        title('10 ms');
-    subplot(1,4,4);
-        bode(G3,opts)
-        title('1 ms');
+    bode(G0,G1,G2,G3,opts)
+        h.Annotation.LegendInformation.IconDisplayStyle = 'off';
+        legend('1 s','100 ms','10 ms','1 ms');
+        xlabel('Frekvens [rad/s]')
+        xlim([0.01 100]);
+        ylim([-10 0]);
+        ylabel('Faseforskydning [grader]')
