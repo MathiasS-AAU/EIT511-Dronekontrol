@@ -13,15 +13,17 @@ fig = figure('Name','Effekt af forsinkelse på fase');
     opts.MagVisible = 'off';
     opts.xlim = [0.01 100];
     opts.ylim = [-10 0];
-    opts.PhaseWrapping = 'off';
-    opts.ConfidenceRegionNumberSD = 4;
+    opts.PhaseMatching = 'on';
+    opts.PhaseMatchingFreq = 10;
+    opts.PhaseMatchingValue = 10;
+    %opts.ConfidenceRegionNumberSD = 4;
     
     W=logspace(-3,3,10000);
     bode(G0,G1,G2,G3,opts,W)
         h.Annotation.LegendInformation.IconDisplayStyle = 'off';
         legend('1 s','100 ms','10 ms','1 ms');
         
-        title('Bodeplot af f')
+        title('Bodeplot af forsinkelse')
         xlabel('Frekvens')
       
         
